@@ -1,13 +1,74 @@
 {
-    "emoney.account": {
+    "calendar.users": {
+      "transaction": true,
+      "partition-key": [
+        "email"
+      ],
+      "clustering-key": [],
+      "columns": {
+        "email": "TEXT",
+        "username": "TEXT",
+        "password": "TEXT"
+      }
+    },
+    "calendar.schedules": {
+      "transaction": true,
+      "partition-key": [
+        "user_email"
+      ],
+      "clustering-key": [
+        "id",
+        "day"
+      ],
+      "columns": {
+        "user_email": "TEXT",
+        "id": "TEXT",
+        "day": "TEXT",
+        "title": "TEXT",
+        "is_reserve_app_schedule": "BOOLEAN"
+      }
+    },
+    "reserve.reserves": {
+      "transaction": true,
+      "partition-key": [
+        "user_email"
+      ],
+      "clustering-key": [
+        "remain_id",
+        "id"
+      ],
+      "columns": {
+        "user_email": "TEXT",
+        "remain_id": "TEXT",
+        "id": "TEXT"
+      }
+    },
+    "reserve.remains": {
       "transaction": true,
       "partition-key": [
         "id"
       ],
-      "clustering-key": [],
+      "clustering-key": [
+        "event_id"
+      ],
       "columns": {
         "id": "TEXT",
-        "balance": "INT"
+        "event_id": "TEXT",
+        "day": "TEXT",
+        "remain_num_of_people": "INT"
+      }
+    },
+    "reserve.events": {
+      "transaction": true,
+      "partition-key": [
+        "id"
+      ],
+      "clustering-key": [
+        "event_name"
+      ],
+      "columns": {
+        "id": "TEXT",
+        "event_name": "TEXT"
       }
     }
 }

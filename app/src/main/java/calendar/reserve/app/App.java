@@ -4,12 +4,20 @@
 package calendar.reserve.app;
 import static spark.Spark.*;
 
+import calendar.reserve.app.controllers.UserController;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
     }
 
     public static void main(String[] args) {
-        get("/hello", (req, res) -> "Hello World");
+        initialize();
+        UserController.api();
+    }
+
+    private static void initialize() {
+        // server port
+        port(8090);
     }
 }
