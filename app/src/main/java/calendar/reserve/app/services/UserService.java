@@ -11,6 +11,8 @@ import com.scalar.db.io.Key;
 import com.scalar.db.io.TextValue;
 
 import java.io.IOException;
+import java.util.Optional;
+import com.scalar.db.api.Result;
 
 // ★ポイント8
 public class UserService extends ModelService {
@@ -42,6 +44,41 @@ public class UserService extends ModelService {
 			tx.put(put);
             tx.commit();                                  
 			return user;
+        } catch (Exception e) {
+            tx.abort();
+            throw e;
+        }
+    }
+
+    public User login(String email, String password) throws Exception{
+
+        DistributedTransaction tx = manager.start();
+
+        try {
+            Key email_key = createPk(email); // パーティションキーの作成
+
+            Optional<Result> user = 
+                tx.get(
+                    new Get(email_key)
+                    .forNamespace(NAMESPACE)               // NameSpaceを指定
+					.forTable(TABLE_NAME)                  // テーブルを指定
+                );
+            if (!user.isPresent()){                     // ユーザが見つからなかったらエラー
+                throw new RuntimeException("User not found");
+            }
+            String correct_password = user.get().getValue("password").get().getAsString().get();
+            if (!correct_password.equals(password)){                    // パスワードが合わなかったらエラー
+                throw new RuntimeException("Incorrect password");
+            }
+            String username = user.get().getValue("username").get().getAsString().get();
+
+
+            tx.commit();
+
+            User login_user = new User(email, password, username);       
+            System.out.println(login_user.getEmail());           
+
+			return login_user;
         } catch (Exception e) {
             tx.abort();
             throw e;

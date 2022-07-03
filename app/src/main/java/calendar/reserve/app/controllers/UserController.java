@@ -7,6 +7,12 @@ import calendar.reserve.app.models.ErrorMessage;
 
 import static spark.Spark.*;
 
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 public class UserController {
 
     public static void api() {
@@ -21,6 +27,21 @@ public class UserController {
                     res.type("application/json");
                     User user = jsonTransformer.fromJson(json, User.class);
                     return userService.create(user);
+                } catch (Exception e) {
+                    throw(e);
+                }
+            }, jsonTransformer);
+
+            post("/login", (req, res) -> {
+                try {
+                    String json = req.body();
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode node = mapper.readTree(json);
+                    String email = node.get("email").textValue();
+                    String password = node.get("password").textValue();
+                    res.type("application/json");
+
+                    return userService.login(email, password);
                 } catch (Exception e) {
                     throw(e);
                 }
