@@ -70,15 +70,14 @@ public class UserService extends ModelService {
             if (!correct_password.equals(password)){                    // パスワードが合わなかったらエラー
                 throw new RuntimeException("Incorrect password");
             }
-            String username = user.get().getValue("username").get().getAsString().get();
+            String username = user.get().getValue("username").get().getAsString().get(); // usernameを取得
 
 
             tx.commit();
 
             User login_user = new User(email, password, username);       
-            System.out.println(login_user.getEmail());           
 
-			return login_user;
+			return login_user; // 取得したユーザを返す
         } catch (Exception e) {
             tx.abort();
             throw e;
