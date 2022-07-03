@@ -17,12 +17,11 @@
         "user_email"
       ],
       "clustering-key": [
-        "id",
-        "day"
+        "uuid"
       ],
       "columns": {
         "user_email": "TEXT",
-        "id": "TEXT",
+        "uuid": "TEXT",
         "day": "TEXT",
         "title": "TEXT",
         "is_reserve_app_schedule": "BOOLEAN"

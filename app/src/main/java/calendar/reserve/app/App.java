@@ -5,6 +5,7 @@ package calendar.reserve.app;
 import static spark.Spark.*;
 
 import calendar.reserve.app.controllers.UserController;
+import calendar.reserve.app.controllers.ScheduleController;
 
 public class App {
     public String getGreeting() {
@@ -14,6 +15,7 @@ public class App {
     public static void main(String[] args) {
         initialize();
         UserController.api();
+        ScheduleController.api();
     }
 
     private static void initialize() {
