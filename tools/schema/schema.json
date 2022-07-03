@@ -34,13 +34,12 @@
         "user_email"
       ],
       "clustering-key": [
-        "remain_id",
-        "id"
+        "remain_id"
       ],
       "columns": {
         "user_email": "TEXT",
         "remain_id": "TEXT",
-        "id": "TEXT"
+        "UUid": "TEXT"
       }
     },
     "reserve.remains": {
