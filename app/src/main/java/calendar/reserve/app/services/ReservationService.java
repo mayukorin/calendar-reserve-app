@@ -40,12 +40,18 @@ public class ReservationService extends ModelService {
         try {
             String newId = UUID.randomUUID().toString();
 
-            Put put =new Put(new Key("user_email", "hoge@gmail.com"))
+            Put p1  = new Put(new Key("user_email",email), new Key("remain_id", remaining_id))
             .forNamespace("reserve")
             .forTable("reserves")
-            .withValue("UUid", "testtest")
-            .withValue("remain_id", "test"); 
-            tx.put(put);
+            .withValue("reserve_id", newId);
+            tx.put(p1);
+
+            
+
+
+
+
+
             // remain tableの残席数を減らす
             
 
