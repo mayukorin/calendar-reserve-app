@@ -1,6 +1,7 @@
 package calendar.reserve.app.controllers;
 
 import calendar.reserve.app.services.ReservationService;
+import calendar.reserve.app.services.LoadInitialData;
 import calendar.reserve.app.services.JsonTransformer;
 import calendar.reserve.app.models.User;
 import calendar.reserve.app.models.ErrorMessage;
@@ -13,24 +14,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
-public class ReservationController {
+public class LoadController {
 
     public static void api() {
 
         try {
-            ReservationService reservationservice = new ReservationService();
+            LoadInitialData load_data= new LoadInitialData();
             JsonTransformer jsonTransformer = new JsonTransformer();
 
-            post("/register_reserve", (req, res) -> {
+            post("/load_inini", (req, res) -> {
                 try {
-                    String json = req.body();
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode node = mapper.readTree(json);
-                    String email = node.get("email").textValue();
-                    String remaining_id = node.get("remaining_id").textValue();
-                    res.type("application/json");
+                    load_data.loadData();
 
-                    return reservationservice.create(email, remaining_id);
+                    return "initial data loaded";
                 } catch (Exception e) {
                     throw(e);
                 }
@@ -43,8 +39,6 @@ public class ReservationController {
                 response.status(400);
                 response.body(responseMessage);
             });
-            get("/hello", "application/json", (req, res) -> "Hello World");
-            
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
