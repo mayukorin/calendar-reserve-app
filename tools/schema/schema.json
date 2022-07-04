@@ -17,7 +17,8 @@
       "user_email"
     ],
     "clustering-key": [
-      "day"
+      "day",
+      "schedule_id"
     ],
     "secondary-index": [
       "schedule_id"
@@ -55,11 +56,15 @@
     "clustering-key": [
       "event_id"
     ],
+    "secondary-index": [
+      "event_id"
+    ],
     "columns": {
       "remain_id": "TEXT",
       "event_id": "TEXT",
       "day": "TEXT",
-      "remain_num_of_people": "INT"
+      "remain_num_of_people": "INT",
+      "common_key": "TEXT"
     }
   },
   "reserve.events": {
@@ -70,9 +75,13 @@
     "clustering-key": [
       "event_name"
     ],
+    "secondary-index": [
+      "common_key"
+    ],
     "columns": {
       "event_id": "TEXT",
-      "event_name": "TEXT"
+      "event_name": "TEXT",
+      "common_key": "TEXT"
     }
   }
 }

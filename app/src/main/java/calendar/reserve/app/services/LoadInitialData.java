@@ -69,6 +69,7 @@ public class LoadInitialData extends ModelService{
         // if (!event.isPresent()) {
         transaction.put(
             new Put(new Key("event_id", event_id), new Key("event_name",event_name))
+                .withValue("common_key","common")
                 .forNamespace("reserve")
                 .forTable("events"));
         // }

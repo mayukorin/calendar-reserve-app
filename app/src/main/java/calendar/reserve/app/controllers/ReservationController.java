@@ -36,6 +36,33 @@ public class ReservationController {
                 }
             }, jsonTransformer);
 
+            post("/reservation", (req, res) -> {
+                try {
+                    String json = req.body();
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode node = mapper.readTree(json);
+                    String email = node.get("email").textValue();
+                    res.type("application/json");
+
+                    return reservationservice.show_user_reservation(email);
+                } catch (Exception e) {
+                    throw(e);
+                }
+            });
+
+            get("/show_events_info", (req, res) -> {
+                try {
+                    String json = req.body();
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode node = mapper.readTree(json);
+                    res.type("application/json");
+
+                    return reservationservice.get_all_events_data();
+                } catch (Exception e) {
+                    throw(e);
+                }
+            });
+
 
             exception(Exception.class, (exception, request, response) -> {
                 response.type("application/json");
@@ -43,6 +70,8 @@ public class ReservationController {
                 response.status(400);
                 response.body(responseMessage);
             });
+
+
             get("/hello", "application/json", (req, res) -> "Hello World");
             
         } catch (Exception e) {
