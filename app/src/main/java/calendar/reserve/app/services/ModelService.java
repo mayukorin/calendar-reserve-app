@@ -32,11 +32,11 @@ public class ModelService  {
       }
     }
 
-    public Optional<Result> getResultAndThrowsIfNotFound(DistributedTransaction tx, Get get)
+    public Optional<Result> getResultAndThrowsIfNotFound(DistributedTransaction tx, Get get, String className)
       throws Exception {
       Optional<Result> result = tx.get(get);
       if (!tx.get(get).isPresent()) {
-        throw new Exception("該当のものが存在しません"); // TODO : 該当のもの
+        throw new Exception("該当の"+className+"が存在しません"); // TODO : 該当のもの
       }
       return result;
     }

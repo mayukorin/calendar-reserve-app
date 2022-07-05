@@ -22,23 +22,45 @@ public class ScheduleController {
             post("/register_schedules", (req, res) -> {
                 try {
                     JsonNode node = mapper.readTree(req.body());
-                    // System.out.println(node.get("title").textValue());
-                    String id = scheduleService.create(node.get("user_email").textValue(), node.get("day").textValue(), node.get("title").textValue(), new Boolean(node.get("is_reserve_app_schedule").textValue()));
+                    String schedule_id = scheduleService.create(node.get("user_email").textValue(), node.get("day").textValue(), node.get("title").textValue(), new Boolean(node.get("is_reserve_app_schedule").textValue()));
                     
                     res.status(200);
-                    return scheduleService.getById(node.get("user_email").textValue(), id);
-                    // return node.get("title").textValue();
+                    res.type("application/json");
+                    return scheduleService.getById(node.get("user_email").textValue(), schedule_id);
                 } catch (Exception e) {
                     throw(e);
                 }
-            });
+            }, jsonTransformer);
 
-            exception(Exception.class, (exception, request, response) -> {
-                response.type("application/json");
-                String responseMessage = "{\"message\":" + exception + "}";
-                response.status(400);
-                response.body(responseMessage);
-            });
+            post("/calender", (req, res) -> {
+                try {
+                    JsonNode node = mapper.readTree(req.body());
+                    res.status(200);
+                    res.type("application/json");
+                    return scheduleService.getAllSchedules(node.get("user_email").textValue());
+                } catch (Exception e) {
+                    throw(e);
+                }
+            }, jsonTransformer);
+
+            post("/day_calender", (req, res) -> {
+                try {
+                    JsonNode node = mapper.readTree(req.body());
+                    res.status(200);
+                    res.type("application/json");
+                    return scheduleService.getDaySchedules(node.get("user_email").textValue(), node.get("day").textValue());
+                } catch (Exception e) {
+                    throw(e);
+                }
+            }, jsonTransformer);
+
+            exception(Exception.class, (exception, req, res) -> {
+                res.type("application/json");
+                String responseMessage = "{\"message\":" + exception.getMessage() + "}";
+                res.status(400);
+                res.body(responseMessage);
+            });  
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
