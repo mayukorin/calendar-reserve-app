@@ -70,9 +70,13 @@
       "clustering-key": [
         "event_name"
       ],
+      "seconday-index": [
+        "common_key"
+      ],
       "columns": {
         "event_id": "TEXT",
-        "event_name": "TEXT"
+        "event_name": "TEXT",
+        "common_key": "TEXT"
       }
     }
 }
