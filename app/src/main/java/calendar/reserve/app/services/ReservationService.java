@@ -71,7 +71,6 @@ public class ReservationService extends ModelService {
                 new Put(new Key("remain_id", remaining_id),new Key("event_id", event_id))
                 .withValue("remain_num_of_people", update_remain_num)
                 .withValue("day", day)
-                .withValue("common_key","common")
                 .forNamespace("reserve")
                 .forTable("remains")
             );

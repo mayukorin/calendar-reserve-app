@@ -55,6 +55,9 @@
       "clustering-key": [
         "event_id"
       ],
+      "secondary-index": [
+        "event_id"
+      ],
       "columns": {
         "remain_id": "TEXT",
         "event_id": "TEXT",
@@ -70,7 +73,7 @@
       "clustering-key": [
         "event_name"
       ],
-      "seconday-index": [
+      "secondary-index": [
         "common_key"
       ],
       "columns": {
