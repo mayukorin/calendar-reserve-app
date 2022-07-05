@@ -22,7 +22,7 @@ public class ScheduleController {
             post("/register_schedules", (req, res) -> {
                 try {
                     JsonNode node = mapper.readTree(req.body());
-                    String schedule_id = scheduleService.create(node.get("user_email").textValue(), node.get("day").textValue(), node.get("title").textValue(), new Boolean(node.get("is_reserve_app_schedule").textValue()));
+                    String schedule_id = scheduleService.create(node.get("user_email").textValue(), node.get("day").textValue(), node.get("title").textValue(), node.get("reserve_id").textValue());
                     
                     res.status(200);
                     res.type("application/json");

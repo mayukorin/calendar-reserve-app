@@ -1,6 +1,7 @@
 package calendar.reserve.app.services;
 
 import calendar.reserve.app.models.Schedule;
+import calendar.reserve.app.models.User;
 import calendar.reserve.app.utils.ScalarUtil;
 
 
@@ -34,12 +35,13 @@ public class ScheduleService extends ModelService {
         manager = factory.getTransactionManager();
     }
 
-    public String create(String user_email, String day, String title, Boolean is_reserve_app_schedule) throws Exception {
+    public String create(String user_email, String day, String title, String reserve_id) throws Exception {
 
         DistributedTransaction tx = manager.start();
 
         try {
-            Get get = new Get(new Key("email", user_email))
+  
+            Get get = new Get(new Key(User.EMAIL, user_email))
                 .forNamespace(NAMESPACE)
                 .forTable("users");
             getResultAndThrowsIfNotFound(tx, get, "ユーザー");
@@ -49,10 +51,8 @@ public class ScheduleService extends ModelService {
             Put put =
 					new Put(
                         new Key(Schedule.USER_EMAIL, user_email),
-                        new Key(Schedule.DAY, day, Schedule.SCHEDULE_ID, schedule_id))  
-                    // .withValue(Schedule.SCHEDULE_ID, schedule_id)    
+                        new Key(Schedule.DAY, day, Schedule.SCHEDULE_ID, schedule_id, Schedule.RESERVE_ID, reserve_id))   
 					.withValue(Schedule.TITLE, title)
-                    .withValue(Schedule.IS_RESERVE_APP_SCHEDULE, is_reserve_app_schedule) // ここで error
                     .forNamespace(NAMESPACE)               // NameSpaceを指定
 					.forTable(TABLE_NAME);
 
@@ -79,20 +79,9 @@ public class ScheduleService extends ModelService {
 					.forTable(TABLE_NAME);
 
 			Optional<Result> result = getResultAndThrowsIfNotFound(tx, get, "スケジュール"); // TODO: スケジュール
-            // その日の予定を取得
-            List<Result> statements = tx.scan(
-                new Scan(new Key(Schedule.USER_EMAIL, user_email)).withStart(new Key(Schedule.DAY, "2022-07-11")).forNamespace(NAMESPACE).forTable(TABLE_NAME));
-            // String ok = (Integer.valueOf(statements.size())).toString();
-            /*
-            for (Result statement : statements) {
-              ok = statement.getValue("title").get().getAsString().get(); 
-            }
-            */
-            // return ok;
             
             tx.commit();   
             System.out.println(result.get().getValue("is_reserve_app_schedule").get().getAsBoolean());
-            // return result.get().getValue("user_email").get().getAsString().get();
             return parse(result);                               
 
         } catch (Exception e) {
@@ -166,7 +155,7 @@ public class ScheduleService extends ModelService {
             ScalarUtil.getTextValue(result, Schedule.SCHEDULE_ID),
             ScalarUtil.getTextValue(result, Schedule.DAY),
             ScalarUtil.getTextValue(result, Schedule.TITLE),
-            ScalarUtil.getBooleanValue(result, Schedule.IS_RESERVE_APP_SCHEDULE)
+            ScalarUtil.getTextValue(result, Schedule.RESERVE_ID)
         );
     }
 
@@ -177,7 +166,7 @@ public class ScheduleService extends ModelService {
             ScalarUtil.getResultTextValue(result, Schedule.SCHEDULE_ID),
             ScalarUtil.getResultTextValue(result, Schedule.DAY),
             ScalarUtil.getResultTextValue(result, Schedule.TITLE),
-            ScalarUtil.getResultBooleanValue(result, Schedule.IS_RESERVE_APP_SCHEDULE)
+            ScalarUtil.getResultTextValue(result, Schedule.RESERVE_ID)
         );
     }
 }
