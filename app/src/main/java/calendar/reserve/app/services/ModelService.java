@@ -31,6 +31,12 @@ public class ModelService  {
         throw new ObjectAlreadyExistingException("同じemailアドレスのuserが既に存在しています");
       }
     }
+    public void getAndThrowsIfNotExist(DistributedTransaction tx, Get get)
+			throws ObjectAlreadyExistingException, CrudConflictException, CrudException {
+      if (!tx.get(get).isPresent()) {
+        throw new ObjectAlreadyExistingException("入力したemailは登録されていません。");
+      }
+    }
 
     public Optional<Result> getResultAndThrowsIfNotFound(DistributedTransaction tx, Get get, String className)
       throws Exception {

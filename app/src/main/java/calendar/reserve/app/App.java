@@ -6,6 +6,8 @@ import static spark.Spark.*;
 
 import calendar.reserve.app.controllers.UserController;
 import calendar.reserve.app.controllers.ScheduleController;
+import calendar.reserve.app.controllers.ReservationController;
+import calendar.reserve.app.controllers.LoadController;
 
 public class App {
     public String getGreeting() {
@@ -16,7 +18,10 @@ public class App {
         initialize();
         UserController.api();
         ScheduleController.api();
+        ReservationController.api();
+        LoadController.api();
     }
+
 
     private static void initialize() {
         // server port

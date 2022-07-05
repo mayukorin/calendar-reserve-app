@@ -26,8 +26,7 @@ dependencies {
     implementation 'com.sparkjava:spark-core:2.9.3'
     implementation group: 'com.scalar-labs', name: 'scalardb', version: '3.5.2'
     implementation 'com.google.code.gson:gson:2.9.0'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.3'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.3.4'
 }
 
 application {
