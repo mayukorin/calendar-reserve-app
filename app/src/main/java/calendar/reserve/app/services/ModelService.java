@@ -7,10 +7,12 @@ import com.scalar.db.api.DistributedTransaction;
 import com.scalar.db.api.Get;
 import com.scalar.db.exception.transaction.CrudConflictException;
 import com.scalar.db.exception.transaction.CrudException;
+import com.scalar.db.api.Result;
 
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.File;
+import java.util.Optional;
 
 public class ModelService  {
 
@@ -34,6 +36,15 @@ public class ModelService  {
       if (!tx.get(get).isPresent()) {
         throw new ObjectAlreadyExistingException("入力したemailは登録されていません。");
       }
+    }
+
+    public Optional<Result> getResultAndThrowsIfNotFound(DistributedTransaction tx, Get get, String className)
+      throws Exception {
+      Optional<Result> result = tx.get(get);
+      if (!tx.get(get).isPresent()) {
+        throw new Exception("該当の"+className+"が存在しません"); // TODO : 該当のもの
+      }
+      return result;
     }
 
     

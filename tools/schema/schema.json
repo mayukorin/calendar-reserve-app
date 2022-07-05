@@ -1,87 +1,82 @@
 {
-  "calendar.users": {
-    "transaction": true,
-    "partition-key": [
-      "email"
-    ],
-    "clustering-key": [],
-    "columns": {
-      "email": "TEXT",
-      "username": "TEXT",
-      "password": "TEXT"
+    "calendar.users": {
+      "transaction": true,
+      "partition-key": [
+        "email"
+      ],
+      "clustering-key": [],
+      "columns": {
+        "email": "TEXT",
+        "username": "TEXT",
+        "password": "TEXT"
+      }
+    },
+    "calendar.schedules": {
+      "transaction": true,
+      "partition-key": [
+        "user_email"
+      ],
+      "clustering-key": [
+        "day", "schedule_id"
+      ],
+      "secondary-index": [
+        "schedule_id"
+      ],
+      "columns": {
+        "user_email": "TEXT",
+        "schedule_id": "TEXT",
+        "day": "TEXT",
+        "title": "TEXT",
+        "is_reserve_app_schedule": "BOOLEAN"
+      }
+    },
+    "reserve.reserves": {
+      "transaction": true,
+      "partition-key": [
+        "user_email"
+      ],
+      "clustering-key": [
+        "remain_id"
+      ],
+      "secondary-index": [
+        "reserve_id"
+      ],
+      "columns": {
+        "user_email": "TEXT",
+        "remain_id": "TEXT",
+        "reserve_id": "TEXT"
+      }
+    },
+    "reserve.remains": {
+      "transaction": true,
+      "partition-key": [
+        "remain_id"
+      ],
+      "clustering-key": [
+        "event_id"
+      ],
+      "columns": {
+        "remain_id": "TEXT",
+        "event_id": "TEXT",
+        "day": "TEXT",
+        "remain_num_of_people": "INT"
+      }
+    },
+    "reserve.events": {
+      "transaction": true,
+      "partition-key": [
+        "event_id"
+      ],
+      "clustering-key": [
+        "event_name"
+      ],
+      "seconday-index": [
+        "common_key"
+      ],
+      "columns": {
+        "event_id": "TEXT",
+        "event_name": "TEXT",
+        "common_key": "TEXT"
+      }
     }
-  },
-  "calendar.schedules": {
-    "transaction": true,
-    "partition-key": [
-      "user_email"
-    ],
-    "clustering-key": [
-      "day",
-      "schedule_id"
-    ],
-    "secondary-index": [
-      "schedule_id"
-    ],
-    "columns": {
-      "user_email": "TEXT",
-      "schedule_id": "TEXT",
-      "day": "TEXT",
-      "title": "TEXT",
-      "is_reserve_app_schedule": "BOOLEAN"
-    }
-  },
-  "reserve.reserves": {
-    "transaction": true,
-    "partition-key": [
-      "user_email"
-    ],
-    "clustering-key": [
-      "remain_id"
-    ],
-    "secondary-index": [
-      "reserve_id"
-    ],
-    "columns": {
-      "user_email": "TEXT",
-      "remain_id": "TEXT",
-      "reserve_id": "TEXT"
-    }
-  },
-  "reserve.remains": {
-    "transaction": true,
-    "partition-key": [
-      "remain_id"
-    ],
-    "clustering-key": [
-      "event_id"
-    ],
-    "secondary-index": [
-      "event_id"
-    ],
-    "columns": {
-      "remain_id": "TEXT",
-      "event_id": "TEXT",
-      "day": "TEXT",
-      "remain_num_of_people": "INT",
-      "common_key": "TEXT"
-    }
-  },
-  "reserve.events": {
-    "transaction": true,
-    "partition-key": [
-      "event_id"
-    ],
-    "clustering-key": [
-      "event_name"
-    ],
-    "secondary-index": [
-      "common_key"
-    ],
-    "columns": {
-      "event_id": "TEXT",
-      "event_name": "TEXT",
-      "common_key": "TEXT"
-    }
-  }
 }
