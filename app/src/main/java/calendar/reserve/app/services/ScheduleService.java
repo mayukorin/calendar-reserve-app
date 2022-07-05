@@ -128,7 +128,7 @@ public class ScheduleService extends ModelService {
 
         try {
             List<Result> results = tx.scan(
-                new Scan(new Key(Schedule.USER_EMAIL, user_email)).withStart(new Key(Schedule.DAY, day)).forNamespace(NAMESPACE).forTable(TABLE_NAME));
+                new Scan(new Key(Schedule.USER_EMAIL, user_email)).withStart(new Key(Schedule.DAY, day)).withEnd(new Key(Schedule.DAY, day)).forNamespace(NAMESPACE).forTable(TABLE_NAME));
 
             List<Schedule> schedules = new ArrayList<Schedule>();
 
