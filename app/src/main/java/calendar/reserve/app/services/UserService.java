@@ -38,6 +38,7 @@ public class UserService extends ModelService {
             Get get = new Get(new Key(User.EMAIL, user.getEmail()))
                 .forNamespace(NAMESPACE)
                 .forTable("users");
+            getResultAndThrowsIfNotFound(tx, get, "ユーザー");
 
 			getAndThrowsIfAlreadyExist(tx, createGet(email)); // 同じIDを持つレコードが存在しないかをチェック
 			Put put =
