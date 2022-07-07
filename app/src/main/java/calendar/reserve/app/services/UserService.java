@@ -34,6 +34,11 @@ public class UserService extends ModelService {
 
         try {
             Key email = createPk(user.getEmail()); // パーティションキーの作成
+
+            Get get = new Get(new Key(User.EMAIL, user.getEmail()))
+                .forNamespace(NAMESPACE)
+                .forTable("users");
+
 			getAndThrowsIfAlreadyExist(tx, createGet(email)); // 同じIDを持つレコードが存在しないかをチェック
 			Put put =
 					new Put(email)                                // usersテーブルに登録/更新するPutオブジェクトを作成

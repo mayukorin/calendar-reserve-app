@@ -10,6 +10,9 @@ import static spark.Spark.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ScheduleController {
 
     public static void api() {
@@ -22,7 +25,7 @@ public class ScheduleController {
             post("/register_schedules", (req, res) -> {
                 try {
                     JsonNode node = mapper.readTree(req.body());
-                    String schedule_id = scheduleService.create(node.get("user_email").textValue(), node.get("day").textValue(), node.get("title").textValue(), new Boolean(node.get("is_reserve_app_schedule").textValue()));
+                    String schedule_id = scheduleService.create(node.get("user_email").textValue(), node.get("day").textValue(), node.get("title").textValue(), node.get("reserve_id").textValue());
                     
                     res.status(200);
                     res.type("application/json");
@@ -34,6 +37,10 @@ public class ScheduleController {
 
             post("/calender", (req, res) -> {
                 try {
+                    System.out.println("okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+                    Logger logger = LoggerFactory.getLogger("root");
+                    logger.info("test operation info");
+                    logger.error("test operation error");
                     JsonNode node = mapper.readTree(req.body());
                     res.status(200);
                     res.type("application/json");
