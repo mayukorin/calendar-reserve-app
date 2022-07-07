@@ -92,7 +92,7 @@ public class ReservationService extends ModelService {
             //schedule tableに予定を追加
             String scheduleId = UUID.randomUUID().toString();
             tx.put(
-                new Put(new Key("user_email",email), new Key("day", day, "schedule_id",scheduleId))
+                new Put(new Key("user_email",email), new Key("day", day, "schedule_id",scheduleId,"reserve_id",newId))
                 .forNamespace("calendar")
                 .forTable("schedules")
                 .withValue("title",event_name)
