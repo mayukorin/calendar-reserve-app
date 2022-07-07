@@ -28,13 +28,13 @@ public class ModelService  {
     public void getAndThrowsIfAlreadyExist(DistributedTransaction tx, Get get)
 			throws ObjectAlreadyExistingException, CrudConflictException, CrudException {
       if (tx.get(get).isPresent()) {
-        throw new ObjectAlreadyExistingException("同じemailアドレスのuserが既に存在しています");
+        throw new ObjectAlreadyExistingException("A user with the same email address already exists.");
       }
     }
     public void getAndThrowsIfNotExist(DistributedTransaction tx, Get get)
 			throws ObjectAlreadyExistingException, CrudConflictException, CrudException {
       if (!tx.get(get).isPresent()) {
-        throw new ObjectAlreadyExistingException("入力したemailは登録されていません。");
+        throw new ObjectAlreadyExistingException("The entered email is not registered.");
       }
     }
 
@@ -42,7 +42,7 @@ public class ModelService  {
       throws Exception {
       Optional<Result> result = tx.get(get);
       if (!tx.get(get).isPresent()) {
-        throw new Exception("該当の"+className+"が存在しません"); // TODO : 該当のもの
+        throw new Exception("not exist "+className); // TODO : 該当のもの
       }
       return result;
     }
