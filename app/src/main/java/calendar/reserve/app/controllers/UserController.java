@@ -30,13 +30,16 @@ public class UserController {
             post("/signup", (req, res) -> {
                 try {
                     // logger.info("test operation info"); これで標準出力できる
-                    
+                    String aa = "aaaa";
+                    String responseMessage = "{\"message\":\"" + aa + "\"}";
+                    System.out.println(responseMessage);
                     String json = req.body();
                     res.type("application/json");
                     User user = jsonTransformer.fromJson(json, User.class);
                     return userService.create(user);
                 } catch (Exception e) {
-                    throw(e);
+                    ErrorMessage em = new ErrorMessage(e.getMessage());
+                    return em;
                 }
             }, jsonTransformer);
 
@@ -51,18 +54,19 @@ public class UserController {
 
                     return userService.login(email, password);
                 } catch (Exception e) {
-                    throw(e);
+                    ErrorMessage em = new ErrorMessage(e.getMessage());
+                    return em;
                 }
             }, jsonTransformer);
 
             get("/hello", "application/json", (req, res) -> "Hello World");
-
+            /*
             exception(Exception.class, (exception, request, response) -> {
+                System.out.println("ooo");
                 response.type("application/json");
-                String responseMessage = "{\"message\":" + exception.getMessage() + "}";
-                response.status(400);
-                response.body(responseMessage);
+                String responseMessage = "{\"messsage\":\"" + exception.getMessage() + "\"}";
             });
+            */
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
