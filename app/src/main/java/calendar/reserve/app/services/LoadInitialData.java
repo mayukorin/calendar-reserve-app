@@ -31,6 +31,7 @@ public class LoadInitialData extends ModelService{
         DistributedTransaction transaction = null;
         try {
         transaction = manager.start();
+        addInitialUser(transaction,"test@example.com", "test", "test");
         String event_id = UUID.randomUUID().toString();
         loadEventIfNotExists(transaction,event_id,"manzai A");
         String remain_id = UUID.randomUUID().toString();
@@ -74,6 +75,17 @@ public class LoadInitialData extends ModelService{
                 .forTable("events"));
         // }
     }
+    public void addInitialUser( DistributedTransaction transaction,String email, String username, String password) throws TransactionException{
+
+        DistributedTransaction tx = manager.start();
+        transaction.put(
+            new Put(new Key("email", email))                                // usersテーブルに登録/更新するPutオブジェクトを作成
+					.forNamespace("calendar")               // NameSpaceを指定
+					.forTable("users")                  // テーブルを指定
+					.withValue("password", password) // TODO: ハッシュ化
+					.withValue("username",username));
+    }
+
     private void loadRemainIfNotExists(
         DistributedTransaction transaction,
         String remain_id,
