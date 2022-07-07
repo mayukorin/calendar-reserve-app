@@ -32,7 +32,8 @@ public class ScheduleController {
                     res.type("application/json");
                     return scheduleService.getById(node.get("user_email").textValue(), schedule_id);
                 } catch (Exception e) {
-                    throw(e);
+                    ErrorMessage em = new ErrorMessage(e.getMessage());
+                    return em;
                 }
             }, jsonTransformer);
 
@@ -47,7 +48,8 @@ public class ScheduleController {
                     res.type("application/json");
                     return scheduleService.getAllSchedules(node.get("user_email").textValue());
                 } catch (Exception e) {
-                    throw(e);
+                    ErrorMessage em = new ErrorMessage(e.getMessage());
+                    return em;
                 }
             }, jsonTransformer);
 
@@ -58,7 +60,8 @@ public class ScheduleController {
                     res.type("application/json");
                     return scheduleService.getDaySchedules(node.get("user_email").textValue(), node.get("day").textValue());
                 } catch (Exception e) {
-                    throw(e);
+                    ErrorMessage em = new ErrorMessage(e.getMessage());
+                    return em;
                 }
             }, jsonTransformer);
 

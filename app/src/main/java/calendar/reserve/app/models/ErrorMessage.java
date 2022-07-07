@@ -11,7 +11,7 @@ public class ErrorMessage implements Serializable {
     private String message;
    
 
-    ErrorMessage(String message) {
+    public ErrorMessage(String message) {
         this.message = message;
     }
 
