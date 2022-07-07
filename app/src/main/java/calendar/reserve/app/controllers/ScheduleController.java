@@ -25,8 +25,9 @@ public class ScheduleController {
             post("/register_schedules", (req, res) -> {
                 try {
                     JsonNode node = mapper.readTree(req.body());
-                    String schedule_id = scheduleService.create(node.get("user_email").textValue(), node.get("day").textValue(), node.get("title").textValue(), node.get("reserve_id").textValue());
-                    
+                    String schedule_id = scheduleService.create(node.get("user_email").textValue(), node.get("day").textValue(), node.get("title").textValue(), "xx"); // TODO: reserve_id が ""のときも対応
+                    System.out.println("okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+                    System.out.println(schedule_id);
                     res.status(200);
                     res.type("application/json");
                     return scheduleService.getById(node.get("user_email").textValue(), schedule_id);
