@@ -39,6 +39,7 @@ public class UserController {
                     return userService.create(user);
                 } catch (Exception e) {
                     ErrorMessage em = new ErrorMessage(e.getMessage());
+                    res.status(400);
                     return em;
                 }
             }, jsonTransformer);
@@ -55,6 +56,7 @@ public class UserController {
                     return userService.login(email, password);
                 } catch (Exception e) {
                     ErrorMessage em = new ErrorMessage(e.getMessage());
+                    res.status(400);
                     return em;
                 }
             }, jsonTransformer);

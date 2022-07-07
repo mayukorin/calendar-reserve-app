@@ -33,6 +33,7 @@ public class ReservationController {
                     return reservationservice.create(email, remaining_id);
                 } catch (Exception e) {
                     ErrorMessage em = new ErrorMessage(e.getMessage());
+                    res.status(400);
                     return em;
                 }
             }, jsonTransformer);
@@ -48,6 +49,7 @@ public class ReservationController {
                     return reservationservice.show_user_reservation(email);
                 } catch (Exception e) {
                     ErrorMessage em = new ErrorMessage(e.getMessage());
+                    res.status(400);
                     return em;
                 }
             });
@@ -62,6 +64,7 @@ public class ReservationController {
                     return reservationservice.get_all_events_data();
                 } catch (Exception e) {
                     ErrorMessage em = new ErrorMessage(e.getMessage());
+                    res.status(400);
                     return em;
                 }
             });
