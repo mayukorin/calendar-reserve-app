@@ -81,7 +81,6 @@ public class ScheduleService extends ModelService {
 			Optional<Result> result = getResultAndThrowsIfNotFound(tx, get, "スケジュール"); // TODO: スケジュール
             
             tx.commit();   
-            System.out.println(result.get().getValue("is_reserve_app_schedule").get().getAsBoolean());
             return parse(result);                               
 
         } catch (Exception e) {
