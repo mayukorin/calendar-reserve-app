@@ -27,8 +27,7 @@
         "schedule_id": "TEXT",
         "day": "TEXT",
         "reserve_id": "TEXT",
-        "title": "TEXT",
-        "is_reserve_app_schedule": "BOOLEAN"
+        "title": "TEXT"
       }
     },
     "reserve.reserves": {

@@ -96,7 +96,6 @@ public class ReservationService extends ModelService {
                 .forNamespace("calendar")
                 .forTable("schedules")
                 .withValue("title",event_name)
-                .withValue("is_reserve_app_schedule", new Boolean(true))
             );
 
 
