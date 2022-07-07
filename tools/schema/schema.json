@@ -17,7 +17,7 @@
         "user_email"
       ],
       "clustering-key": [
-        "day", "schedule_id"
+        "day", "schedule_id", "reserve_id"
       ],
       "secondary-index": [
         "schedule_id"
@@ -26,6 +26,7 @@
         "user_email": "TEXT",
         "schedule_id": "TEXT",
         "day": "TEXT",
+        "reserve_id": "TEXT",
         "title": "TEXT",
         "is_reserve_app_schedule": "BOOLEAN"
       }
