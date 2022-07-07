@@ -12,8 +12,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 public class UserController {
+
+    Logger logger = LoggerFactory.getLogger("root");
 
     public static void api() {
 
@@ -23,6 +29,8 @@ public class UserController {
 
             post("/signup", (req, res) -> {
                 try {
+                    // logger.info("test operation info"); これで標準出力できる
+                    
                     String json = req.body();
                     res.type("application/json");
                     User user = jsonTransformer.fromJson(json, User.class);

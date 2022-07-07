@@ -27,9 +27,13 @@ dependencies {
     implementation group: 'com.scalar-labs', name: 'scalardb', version: '3.5.2'
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.3.4'
+    implementation group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21'
 }
 
 application {
     // Define the main class for the application.
     mainClass = 'calendar.reserve.app.App'
 }
+
+logging.captureStandardOutput LogLevel.INFO
+println 'A message which is logged at INFO level'
