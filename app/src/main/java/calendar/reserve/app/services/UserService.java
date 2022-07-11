@@ -44,7 +44,7 @@ public class UserService extends ModelService {
 					new Put(email)                                // usersテーブルに登録/更新するPutオブジェクトを作成
 					.forNamespace(NAMESPACE)               // NameSpaceを指定
 					.forTable(TABLE_NAME)                  // テーブルを指定
-					.withValue(User.PASSWORD, user.getPassword()) // TODO: ハッシュ化
+					.withValue(User.PASSWORD, user.getPassword()) // TODO: ハッシュ化 .withValue(column name, data)
 					.withValue(User.USER_NAME, user.getUsername());
 			tx.put(put);
             tx.commit();                                  
@@ -90,6 +90,7 @@ public class UserService extends ModelService {
     }
 
     private Key createPk(String email) {
+        // Key(new TextValue(database column name, string))
 		return new Key(new TextValue(User.EMAIL, email));
 	}
 
