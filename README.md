@@ -3,14 +3,21 @@
 - Gradle (7.4.2)
 
 # 立ち上げ方
-1. Docker を立ち上げる
+1. Docker を立ち上げる．立ち上がったままで OK.
 `calendar-reserve-app % docker-compose up`
-2. ビルドする
+2. 1 とは別のタブで下のコマンドを実行．
 `calendar-reserve-app % ./gradlew build`
-3. schema.json に書かれたテーブルを作成
+3. 2 と同じタブで，schema.json に書かれたテーブルを作成
 `java -jar tools/scalardb-schema-loader-3.5.2.jar --config app/src/main/resources/database.properties --coordinator -f tools/schema/schema.json`
-4. サーバーを立ち上げる
+4. 2 と同じタブで，サーバーを立ち上げる
 `calendar-reserve-app % gradle run`
 
 ※ テーブルを削除したいときは，
 `java -jar tools/scalardb-schema-loader-3.5.2.jar --config app/src/main/resources/database.properties  -f tools/schema/schema.json -D`
+
+# ファイルを編集したときは
+その都度，以下2つのコマンドを実行する．こうすることで，変更が反映される．
+1. ビルドする
+`calendar-reserve-app % ./gradlew build`
+2. サーバーを立ち上げる．
+`calendar-reserve-app % gradle run`
