@@ -18,6 +18,6 @@
 # ファイルを編集したときは
 その都度，以下2つのコマンドを実行する．こうすることで，変更が反映される．
 1. ビルドする
-`calendar-reserve-app % ./gradlew build`
+`./gradlew build`
 2. サーバーを立ち上げる．
-`calendar-reserve-app % gradle run`
+`gradle run`
