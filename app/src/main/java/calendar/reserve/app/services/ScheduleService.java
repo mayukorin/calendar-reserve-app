@@ -75,9 +75,7 @@ public class ScheduleService extends ModelService {
        DistributedTransaction tx = manager.start();
 
         try {
-            Get get =
-					// new Get(new Key(Schedule.USER_EMAIL, user_email), new Key(Schedule.DAY, "2022-07-11", Schedule.SCHEDULE_ID, schedule_id))  
-                    new Get(new Key(Schedule.SCHEDULE_ID, schedule_id))                              
+            Get get = new Get(new Key(Schedule.SCHEDULE_ID, schedule_id))                              
 					.forNamespace(NAMESPACE)               
 					.forTable(TABLE_NAME);
 
