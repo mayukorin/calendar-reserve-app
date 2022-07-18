@@ -26,8 +26,6 @@ public class ScheduleController {
                 try {
                     JsonNode node = mapper.readTree(req.body());
                     String schedule_id = scheduleService.create(node.get("user_email").textValue(), node.get("day").textValue(), node.get("title").textValue(), "xx"); // TODO: reserve_id が ""のときも対応
-                    System.out.println("okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-                    System.out.println(schedule_id);
                     res.status(200);
                     res.type("application/json");
                     return scheduleService.getById(node.get("user_email").textValue(), schedule_id);
@@ -38,12 +36,22 @@ public class ScheduleController {
                 }
             }, jsonTransformer);
 
+            post("/delete_schedule", (req, res) -> {
+                try {
+                    JsonNode node = mapper.readTree(req.body());
+                    scheduleService.destroy(node.get("schedule_id").textValue());
+                    res.status(200);
+                    res.type("application/json"); 
+                    return "ok";
+                } catch (Exception e) {
+                    ErrorMessage em = new ErrorMessage(e.getMessage());
+                    res.status(400);
+                    return em;
+                }
+            }, jsonTransformer);
+
             post("/calender", (req, res) -> {
                 try {
-                    System.out.println("okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-                    Logger logger = LoggerFactory.getLogger("root");
-                    logger.info("test operation info");
-                    logger.error("test operation error");
                     JsonNode node = mapper.readTree(req.body());
                     res.status(200);
                     res.type("application/json");
