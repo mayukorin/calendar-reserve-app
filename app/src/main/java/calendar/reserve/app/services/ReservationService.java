@@ -7,10 +7,12 @@ import com.scalar.db.api.DistributedTransaction;
 import com.scalar.db.api.DistributedTransactionManager;
 import com.scalar.db.service.TransactionFactory;
 import com.scalar.db.api.Put;
+import com.scalar.db.api.Delete;
 import com.scalar.db.api.Get;
 import com.scalar.db.api.Scan;
 import com.scalar.db.io.Key;
 import com.scalar.db.io.TextValue;
+import calendar.reserve.app.utils.ScalarUtil;
 
 import java.util.List;
 import java.io.IOException;
@@ -239,7 +241,108 @@ public class ReservationService extends ModelService {
         }
     }
 
+    public String destroy(String reserveId) throws Exception {
 
+        DistributedTransaction tx = manager.start();
+
+        try {
+            // 削除対象のReserveをGet
+            Get getReserve = 
+                new Get(
+                    new Key("reserve_id", reserveId)
+                )
+                .forNamespace("reserve")               
+                .forTable("reserves");
+            Optional<Result> resultReserve = getResultAndThrowsIfNotFound(tx, getReserve, "予約");
+            String remainId = ScalarUtil.getTextValue(resultReserve, "remain_id");
+            String userEmail = ScalarUtil.getTextValue(resultReserve, "user_email");
+
+            // 削除対象のReserveをDelete
+            Get getReserveForDelete =
+                new Get(
+                    new Key("user_email", userEmail),
+                    new Key("remain_id", remainId)
+                )                              
+                .forNamespace("reserve")               
+                .forTable("reserves");
+            getResultAndThrowsIfNotFound(tx, getReserveForDelete, "予約");
+            Delete deleteReserve = new Delete(
+                    new Key("user_email", userEmail),
+                    new Key("remain_id", remainId)
+                )
+                .forNamespace("reserve")               
+                .forTable("reserves");
+            tx.delete(deleteReserve);
+
+            // Remain の remain_num_of_people を1個追加
+            List<Result> remains = 
+                tx.scan(new Scan(
+                        new Key("remain_id", remainId)
+                    )
+                    .forNamespace("reserve")
+                    .forTable("remains")); 
+            
+            if (remains == null || remains.size() == 0) {
+                throw new RuntimeException("Remain not found");
+            }
+            Result resultRemain = remains.get(0);
+            int update_remain_num = ScalarUtil.getResultIntValue(resultRemain, "remain_num_of_people") + 1;
+            String reserveDay = ScalarUtil.getResultTextValue(resultRemain, "day");
+            Put put =
+                new Put(
+                    new Key("remain_id", remainId),
+                    new Key("event_id", ScalarUtil.getResultTextValue(resultRemain, "event_id"))) 
+                .withValue("remain_num_of_people", update_remain_num)  
+                .withValue("day", ScalarUtil.getResultTextValue(resultRemain, "day"))
+                .forNamespace("reserve")               
+                .forTable("remains");
+            tx.put(put);
+
+            // 削除対象のReserveをGet
+            List<Result> schedules = 
+                tx.scan(new Scan(new Key("user_email", userEmail))
+                .withStart(new Key("day", reserveDay))
+                .withEnd(new Key("day", reserveDay))
+                .forNamespace("calendar").forTable("schedules")); 
+            if (schedules == null || schedules.size() == 0) {
+                throw new RuntimeException("Schedule not found");
+            }
+            Result resultSchedule = schedules.get(0);
+            for (Result schedule : schedules) {
+                if(ScalarUtil.getResultTextValue(schedule, "reserve_id").equals(reserveId)){
+                    resultSchedule = schedule;
+                }
+            }
+            String scheduleId = ScalarUtil.getResultTextValue(resultSchedule, "schedule_id");
+            String scheduleDay = ScalarUtil.getResultTextValue(resultSchedule, "day");
+
+            // // 削除対象のScheduleをDelete
+            Get getScheduleForDelete =
+                    new Get(
+                        new Key("user_email", userEmail),
+                        new Key("day", scheduleDay, "schedule_id", scheduleId, "reserve_id", reserveId)
+                    )                              
+					.forNamespace("calendar")               
+					.forTable("schedules");
+            getResultAndThrowsIfNotFound(tx, getScheduleForDelete, "スケジュール");
+            Delete delete = 
+                new Delete(
+                        new Key("user_email", userEmail),
+                        new Key("day", scheduleDay, "schedule_id", scheduleId, "reserve_id", reserveId)
+                    )
+                    .forNamespace("calendar")               
+					.forTable("schedules");
+            tx.delete(delete);
+
+
+
+            tx.commit();  
+            return "{\"message\": \"reservation deleted correctly\"}";
+        } catch (Exception e) {
+            tx.abort();
+            throw e;
+        }
+    }
 
     private Key createUserPk(String email) {
 		return new Key(new TextValue(User.EMAIL, email));

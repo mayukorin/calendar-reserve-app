@@ -69,6 +69,23 @@ public class ReservationController {
                 }
             });
 
+            post("/delete_reserve", (req, res) -> {
+                try {
+                    String json = req.body();
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode node = mapper.readTree(json);
+                    String reserve_id = node.get("reserve_id").textValue();
+                    res.type("application/json");
+
+                    return reservationservice.destroy(reserve_id);
+                } catch (Exception e) {
+                    ErrorMessage em = new ErrorMessage(e.getMessage());
+                    res.status(400);
+                    return em;
+                }
+            });
+
+
 
             exception(Exception.class, (exception, request, response) -> {
                 response.type("application/json");
