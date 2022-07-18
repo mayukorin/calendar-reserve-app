@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Reserve implements Serializable {
 
     private static final long serialVersionUID = 2L;// ここの値はuserと変えるべきか
-	public static final String ID = "id";
+	public static final String ID = "reserve_id";
 	public static final String EMAIL = "user_email";
 	public static final String REMAIN_ID = "remain_id";
 

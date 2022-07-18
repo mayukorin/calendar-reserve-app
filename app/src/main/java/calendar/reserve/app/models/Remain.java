@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Remain implements Serializable {
 
     private static final long serialVersionUID = 2L;// ここの値はuserと変えるべきか
-	public static final String ID = "id";
+	public static final String ID = "remain_id";
 	public static final String DAY = "day";
 	public static final String REMAIN_NUM = "remain_num_of_people";
     public static final String EVENT_ID= "event_id";
